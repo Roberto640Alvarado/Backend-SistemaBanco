@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SistemaBancoBack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63ffe77f57bec78f4355f7f4dd6b5c027db1b419")]
 [assembly: System.Reflection.AssemblyProductAttribute("SistemaBancoBack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SistemaBancoBack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
