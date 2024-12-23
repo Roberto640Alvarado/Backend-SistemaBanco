@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaBancoBack.Models
 {
@@ -11,6 +12,7 @@ namespace SistemaBancoBack.Models
         [StringLength(50)]
         public string? Descripcion { get; set; }
 
+        [JsonIgnore]
         public ICollection<Transaccion> Transacciones { get; set; } = new List<Transaccion>();
     }
 }

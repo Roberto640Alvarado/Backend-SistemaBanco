@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaBancoBack.Models
 {
@@ -26,10 +27,12 @@ namespace SistemaBancoBack.Models
 
         //Relación con Cliente
         [ForeignKey("CodigoCliente")]
+        [JsonIgnore]
         public Cliente Cliente { get; set; } = new Cliente();
 
         //Relación con TipoTransaccion
         [ForeignKey("CodigoTipoTransaccion")]
+        [JsonIgnore]
         public TipoTransaccion TipoTransaccion { get; set; } = new TipoTransaccion();
     }
 }
