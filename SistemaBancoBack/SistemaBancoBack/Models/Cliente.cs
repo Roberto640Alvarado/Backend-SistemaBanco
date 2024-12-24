@@ -29,7 +29,6 @@ namespace SistemaBancoBack.Models
         [Column(TypeName = "decimal(10,2)")]
         public decimal SaldoDisponible { get; set; }
 
-        [JsonIgnore]
         public ICollection<Transaccion> Transacciones { get; set; } = new List<Transaccion>();
     }
 }

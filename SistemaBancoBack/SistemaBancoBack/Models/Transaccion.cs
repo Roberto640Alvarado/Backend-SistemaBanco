@@ -27,12 +27,10 @@ namespace SistemaBancoBack.Models
 
         //Relación con Cliente
         [ForeignKey("CodigoCliente")]
-        [JsonIgnore]
-        public Cliente Cliente { get; set; } = new Cliente();
+        public Cliente Cliente { get; set; }
 
         //Relación con TipoTransaccion
         [ForeignKey("CodigoTipoTransaccion")]
-        [JsonIgnore]
-        public TipoTransaccion TipoTransaccion { get; set; } = new TipoTransaccion();
+        public TipoTransaccion TipoTransaccion { get; set; } 
     }
 }
