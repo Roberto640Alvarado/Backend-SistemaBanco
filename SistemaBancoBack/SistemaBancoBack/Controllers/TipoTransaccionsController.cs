@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaBancoBack.Context;
 using SistemaBancoBack.Models;
+using SistemaBancoBack.Models.DTO;
 
 namespace SistemaBancoBack.Controllers
 {
@@ -21,20 +22,52 @@ namespace SistemaBancoBack.Controllers
             _context = context;
         }
 
-        //POST: api/TipoTransacciones
-        //Crear un tipo de transacción
         [HttpPost]
-        public async Task<ActionResult<TipoTransaccion>> CrearTipoTransaccion([FromBody] TipoTransaccion tipoTransaccion)
+        public async Task<IActionResult> CrearTipoTransaccion([FromBody] TipoTransaccionDTO tipoTransaccionDto)
         {
-            if (tipoTransaccion == null || string.IsNullOrWhiteSpace(tipoTransaccion.Descripcion))
+            if (!ModelState.IsValid)
+                return BadRequest("Los datos enviados no son válidos.");
+
+            try
             {
-                return BadRequest("La descripción del tipo de transacción es obligatoria.");
+                var tipoTransaccion = new TipoTransaccion
+                {
+                    Descripcion = tipoTransaccionDto.Descripcion
+                };
+
+                _context.TipoTransacciones.Add(tipoTransaccion);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(ObtenerTodosLosTiposTransaccion), new { id = tipoTransaccion.CodigoTipoTransaccion }, new
+                {
+                    Mensaje = "El tipo de transacción se creó correctamente.",
+                    TipoTransaccion = tipoTransaccion
+                });
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
+        }
 
-            _context.TipoTransacciones.Add(tipoTransaccion);
-            await _context.SaveChangesAsync();
+        //GET: api/TipoTransacciones
+        //Mostrar todos los tipos de transacción
+        [HttpGet]
+        public async Task<IActionResult> ObtenerTodosLosTiposTransaccion()
+        {
+            try
+            {
+                var tiposTransaccion = await _context.TipoTransacciones.ToListAsync();
 
-            return CreatedAtAction(nameof(CrearTipoTransaccion), new { id = tipoTransaccion.CodigoTipoTransaccion }, tipoTransaccion);
+                if (!tiposTransaccion.Any())
+                    return NotFound("No se encontraron tipos de transacción.");
+
+                return Ok(tiposTransaccion);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
         }
     }
 }

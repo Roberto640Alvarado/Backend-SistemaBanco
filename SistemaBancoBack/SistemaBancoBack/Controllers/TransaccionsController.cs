@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaBancoBack.Context;
 using SistemaBancoBack.Models;
+using SistemaBancoBack.Models.DTO;
 
 namespace SistemaBancoBack.Controllers
 {
@@ -24,31 +25,104 @@ namespace SistemaBancoBack.Controllers
         //POST: api/Transacciones/compra
         //Crear una transacción de tipo 1 Compra
         [HttpPost("compra")]
-        public async Task<ActionResult<Transaccion>> CrearTransaccionCompra([FromBody] Transaccion transaccion)
+        public async Task<IActionResult> CrearCompra([FromBody] CompraDTO compraDto)
         {
-            //Validar tipo de transacción
-            transaccion.CodigoTipoTransaccion = 1; //Tipo 1 = Compra
-            transaccion.Fecha = DateTime.Now;
+            if (!ModelState.IsValid)
+                return BadRequest(new { Mensaje = "Los datos enviados no son válidos.", Errores = ModelState });
 
-            _context.Transacciones.Add(transaccion);
-            await _context.SaveChangesAsync();
+            try
+            {
+                //Buscar el cliente
+                var cliente = await _context.Clientes.FindAsync(compraDto.CodigoCliente);
+                if (cliente == null)
+                    return NotFound(new { Mensaje = "Cliente no encontrado." });
 
-            return CreatedAtAction(nameof(CrearTransaccionCompra), new { id = transaccion.CodigoTransaccion }, transaccion);
+                //Validar límite de crédito
+                if (cliente.SaldoDisponible + compraDto.Monto > cliente.LimiteCredito)
+                {
+                    return BadRequest(new
+                    {
+                        Mensaje = "La compra excede el límite de crédito disponible.",
+                        LimiteCredito = cliente.LimiteCredito,
+                        SaldoDisponible = cliente.SaldoDisponible,
+                        MontoIntentado = compraDto.Monto
+                    });
+                }
+
+                //Crear transacción
+                var transaccion = new Transaccion
+                {
+                    CodigoCliente = compraDto.CodigoCliente,
+                    CodigoTipoTransaccion = compraDto.CodigoTipoTransaccion,
+                    Fecha = compraDto.Fecha,
+                    Descripcion = compraDto.Descripcion,
+                    Monto = compraDto.Monto
+                };
+
+                _context.Transacciones.Add(transaccion);
+
+                //Actualizar saldo disponible del cliente
+                cliente.SaldoDisponible += compraDto.Monto;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Mensaje = "La transacción de compra se creó correctamente.",
+                    Transaccion = new
+                    {
+                        transaccion.CodigoTransaccion,
+                        transaccion.CodigoCliente,
+                        transaccion.CodigoTipoTransaccion,
+                        transaccion.Fecha,
+                        transaccion.Descripcion,
+                        transaccion.Monto
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                //Manejar errores inesperados
+                return StatusCode(500, new { Mensaje = "Error interno del servidor.", Detalles = ex.InnerException?.Message ?? ex.Message });
+            }
         }
 
         //POST: api/Transacciones/pago
         //Crear una transacción de tipo 2 Pago
         [HttpPost("pago")]
-        public async Task<ActionResult<Transaccion>> CrearTransaccionPago([FromBody] Transaccion transaccion)
+        public async Task<IActionResult> CrearPago([FromBody] PagoDTO pagoDto)
         {
-            //Validar tipo de transacción
-            transaccion.CodigoTipoTransaccion = 2; //Tipo 2 = Pago
-            transaccion.Fecha = DateTime.Now;
+            if (!ModelState.IsValid)
+                return BadRequest("Los datos enviados no son válidos.");
 
-            _context.Transacciones.Add(transaccion);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var cliente = await _context.Clientes.FindAsync(pagoDto.CodigoCliente);
+                if (cliente == null)
+                    return NotFound("Cliente no encontrado.");
 
-            return CreatedAtAction(nameof(CrearTransaccionPago), new { id = transaccion.CodigoTransaccion }, transaccion);
+                var transaccion = new Transaccion
+                {
+                    CodigoCliente = pagoDto.CodigoCliente,
+                    CodigoTipoTransaccion = pagoDto.CodigoTipoTransaccion,
+                    Fecha = pagoDto.Fecha,
+                    Descripcion = pagoDto.Descripcion,
+                    Monto = pagoDto.Monto
+                };
+
+                _context.Transacciones.Add(transaccion);
+
+                //Actualizar saldo disponible
+                cliente.SaldoDisponible -= pagoDto.Monto;
+
+                await _context.SaveChangesAsync();
+
+                return Ok("El pago se realizó correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
         }
 
         //GET: api/Transacciones

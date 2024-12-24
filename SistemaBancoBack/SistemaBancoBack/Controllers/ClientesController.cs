@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaBancoBack.Context;
 using SistemaBancoBack.Models;
+using SistemaBancoBack.Models.DTO;
 
 namespace SistemaBancoBack.Controllers
 {
@@ -41,35 +42,90 @@ namespace SistemaBancoBack.Controllers
         //GET: api/Clientes/buscar
         //Buscar cliente por nombre o número de tarjeta
         [HttpGet("buscar")]
-        public async Task<ActionResult<IEnumerable<object>>> BuscarCliente([FromQuery] string? nombre, [FromQuery] string? numeroTarjeta)
+        public async Task<IActionResult> BuscarCliente([FromQuery] string? nombre, [FromQuery] string? numeroTarjeta)
         {
-            if (string.IsNullOrEmpty(nombre) && string.IsNullOrEmpty(numeroTarjeta))
+            if (string.IsNullOrWhiteSpace(nombre) && string.IsNullOrWhiteSpace(numeroTarjeta))
             {
                 return BadRequest("Debe proporcionar un nombre o un número de tarjeta para buscar.");
             }
 
-            var clientes = await _context.Clientes
-                .Where(c => (!string.IsNullOrEmpty(nombre) && EF.Functions.Like(c.Nombre, $"%{nombre}%")) ||
-                            (!string.IsNullOrEmpty(numeroTarjeta) && c.NumeroTarjeta == numeroTarjeta))
-                .Select(c => new
-                {   c.CodigoCliente,
-                    c.NumeroTarjeta,
-                    c.Nombre,
-                    c.Apellido
-                })
-                .ToListAsync();
+            try
+            {
+                var clientes = await _context.Clientes
+                    .Where(c =>
+                        (!string.IsNullOrWhiteSpace(nombre) && EF.Functions.Like(c.Nombre, $"%{nombre}%")) ||
+                        (!string.IsNullOrWhiteSpace(numeroTarjeta) && c.NumeroTarjeta == numeroTarjeta))
+                    .Select(c => new
+                    {
+                        c.CodigoCliente,
+                        c.NumeroTarjeta,
+                        c.Nombre,
+                        c.Apellido
+                    })
+                    .ToListAsync();
 
-            return Ok(clientes);
+                if (!clientes.Any())
+                {
+                    return NotFound("No se encontraron clientes que coincidan con los criterios de búsqueda.");
+                }
+
+                return Ok(clientes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
         }
+
 
         //POST: api/Clientes
         //Crear un nuevo cliente
         [HttpPost]
-        public async Task<ActionResult<Cliente>> CrearCliente(Cliente cliente)
+        public async Task<IActionResult> CrearCliente([FromBody] CrearClienteDTO clienteDto)
         {
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetClientes), new { id = cliente.CodigoCliente }, cliente);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                //Verificar si el número de tarjeta ya existe
+                if (await _context.Clientes.AnyAsync(c => c.NumeroTarjeta == clienteDto.NumeroTarjeta))
+                {
+                    return BadRequest("El número de tarjeta ya está asociado a otro cliente.");
+                }
+
+                var nuevoCliente = new Cliente
+                {
+                    Nombre = clienteDto.Nombre,
+                    Apellido = clienteDto.Apellido,
+                    NumeroTarjeta = clienteDto.NumeroTarjeta,
+                    LimiteCredito = clienteDto.LimiteCredito,
+                    SaldoDisponible = 0 //Valor por defecto
+                };
+
+                _context.Clientes.Add(nuevoCliente);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(BuscarCliente), new { id = nuevoCliente.CodigoCliente }, new
+                {
+                    Mensaje = "Cliente creado exitosamente.",
+                    Cliente = new
+                    {
+                        nuevoCliente.CodigoCliente,
+                        nuevoCliente.Nombre,
+                        nuevoCliente.Apellido,
+                        nuevoCliente.NumeroTarjeta,
+                        nuevoCliente.LimiteCredito,
+                        nuevoCliente.SaldoDisponible
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
         }
 
         //GET: api/Clientes/estadocuenta/{codigoCliente}
