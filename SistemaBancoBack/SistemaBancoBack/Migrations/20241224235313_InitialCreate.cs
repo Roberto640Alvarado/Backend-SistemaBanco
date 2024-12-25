@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaBancoBack.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTableSistemaBanco : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clientes",
+                name: "Cliente",
                 columns: table => new
                 {
                     CodigoCliente = table.Column<int>(type: "int", nullable: false)
@@ -25,11 +25,11 @@ namespace SistemaBancoBack.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.CodigoCliente);
+                    table.PrimaryKey("PK_Cliente", x => x.CodigoCliente);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Configuraciones",
+                name: "Configuracion",
                 columns: table => new
                 {
                     CodigoConfiguracion = table.Column<int>(type: "int", nullable: false)
@@ -39,11 +39,11 @@ namespace SistemaBancoBack.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Configuraciones", x => x.CodigoConfiguracion);
+                    table.PrimaryKey("PK_Configuracion", x => x.CodigoConfiguracion);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipoTransacciones",
+                name: "TipoTransaccion",
                 columns: table => new
                 {
                     CodigoTipoTransaccion = table.Column<int>(type: "int", nullable: false)
@@ -52,11 +52,11 @@ namespace SistemaBancoBack.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoTransacciones", x => x.CodigoTipoTransaccion);
+                    table.PrimaryKey("PK_TipoTransaccion", x => x.CodigoTipoTransaccion);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transacciones",
+                name: "Transaccion",
                 columns: table => new
                 {
                     CodigoTransaccion = table.Column<int>(type: "int", nullable: false)
@@ -69,29 +69,29 @@ namespace SistemaBancoBack.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transacciones", x => x.CodigoTransaccion);
+                    table.PrimaryKey("PK_Transaccion", x => x.CodigoTransaccion);
                     table.ForeignKey(
-                        name: "FK_Transacciones_Clientes_CodigoCliente",
+                        name: "FK_Transaccion_Cliente_CodigoCliente",
                         column: x => x.CodigoCliente,
-                        principalTable: "Clientes",
+                        principalTable: "Cliente",
                         principalColumn: "CodigoCliente",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transacciones_TipoTransacciones_CodigoTipoTransaccion",
+                        name: "FK_Transaccion_TipoTransaccion_CodigoTipoTransaccion",
                         column: x => x.CodigoTipoTransaccion,
-                        principalTable: "TipoTransacciones",
+                        principalTable: "TipoTransaccion",
                         principalColumn: "CodigoTipoTransaccion",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacciones_CodigoCliente",
-                table: "Transacciones",
+                name: "IX_Transaccion_CodigoCliente",
+                table: "Transaccion",
                 column: "CodigoCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacciones_CodigoTipoTransaccion",
-                table: "Transacciones",
+                name: "IX_Transaccion_CodigoTipoTransaccion",
+                table: "Transaccion",
                 column: "CodigoTipoTransaccion");
         }
 
@@ -99,16 +99,16 @@ namespace SistemaBancoBack.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Configuraciones");
+                name: "Configuracion");
 
             migrationBuilder.DropTable(
-                name: "Transacciones");
+                name: "Transaccion");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Cliente");
 
             migrationBuilder.DropTable(
-                name: "TipoTransacciones");
+                name: "TipoTransaccion");
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SistemaBancoBack.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetClientes()
         {
-            var clientes = await _context.Clientes
+            var clientes = await _context.Cliente
                 .Select(c => new
                 {   c.CodigoCliente,
                     c.NumeroTarjeta,
@@ -51,7 +51,7 @@ namespace SistemaBancoBack.Controllers
 
             try
             {
-                var clientes = await _context.Clientes
+                var clientes = await _context.Cliente
                     .Where(c =>
                         (!string.IsNullOrWhiteSpace(nombre) && EF.Functions.Like(c.Nombre, $"%{nombre}%")) ||
                         (!string.IsNullOrWhiteSpace(numeroTarjeta) && c.NumeroTarjeta == numeroTarjeta))
@@ -91,7 +91,7 @@ namespace SistemaBancoBack.Controllers
             try
             {
                 //Verificar si el número de tarjeta ya existe
-                if (await _context.Clientes.AnyAsync(c => c.NumeroTarjeta == clienteDto.NumeroTarjeta))
+                if (await _context.Cliente.AnyAsync(c => c.NumeroTarjeta == clienteDto.NumeroTarjeta))
                 {
                     return BadRequest("El número de tarjeta ya está asociado a otro cliente.");
                 }
@@ -102,10 +102,10 @@ namespace SistemaBancoBack.Controllers
                     Apellido = clienteDto.Apellido,
                     NumeroTarjeta = clienteDto.NumeroTarjeta,
                     LimiteCredito = clienteDto.LimiteCredito,
-                    SaldoDisponible = 0 //Valor por defecto
+                    SaldoDisponible = clienteDto.SaldoDisponible
                 };
 
-                _context.Clientes.Add(nuevoCliente);
+                _context.Cliente.Add(nuevoCliente);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction(nameof(BuscarCliente), new { id = nuevoCliente.CodigoCliente }, new
@@ -126,41 +126,6 @@ namespace SistemaBancoBack.Controllers
             {
                 return StatusCode(500, $"Error interno: {ex.Message}");
             }
-        }
-
-        //GET: api/Clientes/estadocuenta/{codigoCliente}
-        //Ejecutar procedimiento: ObtenerEstadoGeneralCliente
-        [HttpGet("estadocuenta/{codigoCliente}")]
-        public async Task<ActionResult> ObtenerEstadoGeneralCliente(int codigoCliente)
-        {
-            var resultado = await _context.Clientes
-                .FromSqlInterpolated($"EXEC ObtenerEstadoGeneralCliente {codigoCliente}")
-                .ToListAsync();
-
-            return Ok(resultado);
-        }
-
-        //GET: api/Clientes/transacciones-mes-actual/{codigoCliente}
-        //Ejecutar procedimiento: ObtenerTransaccionesMesActual
-        [HttpGet("transacciones-mes-actual/{codigoCliente}")]
-        public async Task<ActionResult> ObtenerTransaccionesMesActual(int codigoCliente)
-        {
-            var transacciones = await _context.Transacciones
-                .FromSqlInterpolated($"EXEC ObtenerTransaccionesMesActual {codigoCliente}")
-                .ToListAsync();
-
-            return Ok(transacciones);
-        }
-
-        //GET: api/Clientes/totales-compras/{codigoCliente}
-        //Ejecutar procedimiento: ObtenerTotalesCompras
-        [HttpGet("totales-compras/{codigoCliente}")]
-        public async Task<ActionResult> ObtenerTotalesCompras(int codigoCliente)
-        {
-            var totales = await _context.Database
-                .ExecuteSqlInterpolatedAsync($"EXEC ObtenerTotalesCompras {codigoCliente}");
-
-            return Ok(totales);
         }
 
     }

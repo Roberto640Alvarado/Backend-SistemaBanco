@@ -53,7 +53,7 @@ namespace SistemaBancoBack.Migrations
 
                     b.HasKey("CodigoCliente");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Cliente");
                 });
 
             modelBuilder.Entity("SistemaBancoBack.Models.Configuracion", b =>
@@ -72,7 +72,7 @@ namespace SistemaBancoBack.Migrations
 
                     b.HasKey("CodigoConfiguracion");
 
-                    b.ToTable("Configuraciones");
+                    b.ToTable("Configuracion");
                 });
 
             modelBuilder.Entity("SistemaBancoBack.Models.TipoTransaccion", b =>
@@ -90,7 +90,7 @@ namespace SistemaBancoBack.Migrations
 
                     b.HasKey("CodigoTipoTransaccion");
 
-                    b.ToTable("TipoTransacciones");
+                    b.ToTable("TipoTransaccion");
                 });
 
             modelBuilder.Entity("SistemaBancoBack.Models.Transaccion", b =>
@@ -123,7 +123,7 @@ namespace SistemaBancoBack.Migrations
 
                     b.HasIndex("CodigoTipoTransaccion");
 
-                    b.ToTable("Transacciones");
+                    b.ToTable("Transaccion");
                 });
 
             modelBuilder.Entity("SistemaBancoBack.Models.Transaccion", b =>

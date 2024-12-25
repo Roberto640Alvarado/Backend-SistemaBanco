@@ -26,7 +26,7 @@ namespace SistemaBancoBack.Controllers
         [HttpPost("configuracion")]
         public async Task<ActionResult<Configuracion>> CrearConfiguracion([FromBody] Configuracion configuracion)
         {
-            _context.Configuraciones.Add(configuracion);
+            _context.Configuracion.Add(configuracion);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(CrearConfiguracion), new { id = configuracion.CodigoConfiguracion }, configuracion);
@@ -42,7 +42,7 @@ namespace SistemaBancoBack.Controllers
                 return BadRequest("El codigo de la configuración no coincide.");
             }
 
-            var configuracionExistente = await _context.Configuraciones.FindAsync(id);
+            var configuracionExistente = await _context.Configuracion.FindAsync(id);
             if (configuracionExistente == null)
             {
                 return NotFound("Configuración no encontrada.");

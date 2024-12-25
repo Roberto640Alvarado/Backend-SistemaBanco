@@ -9,9 +9,9 @@ namespace SistemaBancoBack.Context
         {
 
         }
-        public DbSet<TipoTransaccion> TipoTransacciones { get; set; }
-        public DbSet<Transaccion> Transacciones { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Configuracion> Configuraciones { get;set; }
+        public DbSet<TipoTransaccion> TipoTransaccion { get; set; }
+        public DbSet<Transaccion> Transaccion { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Configuracion> Configuracion { get;set; }
     }   
 }

@@ -16,14 +16,14 @@ namespace SistemaBancoBack.Controllers.Services
 
         public async Task<Cliente> BuscarClienteAsync(int codigoCliente)
         {
-            return await _context.Clientes
+            return await _context.Cliente
                 .Where(c => c.CodigoCliente == codigoCliente)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<TipoTransaccion> BuscarTipoTransaccionAsync(int codigoTipoTransaccion)
         {
-            return await _context.TipoTransacciones
+            return await _context.TipoTransaccion
                 .FirstOrDefaultAsync(t => t.CodigoTipoTransaccion == codigoTipoTransaccion);
         }
     }

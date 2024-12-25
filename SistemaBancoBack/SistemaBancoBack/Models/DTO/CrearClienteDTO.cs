@@ -20,5 +20,9 @@ namespace SistemaBancoBack.Models.DTO
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "El límite de crédito debe ser mayor a 0.")]
         public decimal LimiteCredito { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El saldo disponible debe ser mayor a 0.")]
+        public decimal SaldoDisponible { get; set; }
     }
 }

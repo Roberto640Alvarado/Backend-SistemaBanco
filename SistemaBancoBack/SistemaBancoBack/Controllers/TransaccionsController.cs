@@ -83,7 +83,7 @@ namespace SistemaBancoBack.Controllers
 
                 //Adjuntar los cambios
                 _context.Entry(cliente).State = EntityState.Modified;
-                _context.Transacciones.Add(transaccion);
+                _context.Transaccion.Add(transaccion);
 
                 //Guardar los cambios en la base de datos
                 await _context.SaveChangesAsync();
@@ -169,7 +169,7 @@ namespace SistemaBancoBack.Controllers
 
                 //Adjuntar los cambios
                 _context.Entry(cliente).State = EntityState.Modified;
-                _context.Transacciones.Add(transaccion);
+                _context.Transaccion.Add(transaccion);
 
                 //Guardar los cambios en la base de datos
                 await _context.SaveChangesAsync();
@@ -200,12 +200,84 @@ namespace SistemaBancoBack.Controllers
 
         //GET: api/Transacciones
         //Traer todas las transacciones
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaccion>>> ObtenerTodasLasTransacciones()
+        [HttpGet("{codigoCliente}")]
+        public async Task<ActionResult<IEnumerable<Transaccion>>> ObtenerTodasLasTransacciones(int codigoCliente)
         {
-            var transacciones = await _context.Transacciones.ToListAsync();
+            //Verificar si el cliente existe
+            var cliente = await _transaccionService.BuscarClienteAsync(codigoCliente);
+
+            if (cliente == null)
+            {
+                return NotFound(new { Mensaje = "Cliente no encontrado." });
+            }
+
+            //Obtener todas las transacciones del cliente
+            var transacciones = await _context.Transaccion
+                .Where(t => t.CodigoCliente == codigoCliente)
+                .ToListAsync();
+
             return Ok(transacciones);
         }
+
+        //GET: api/Transacciones/estadocuenta/{codigoCliente}
+        //Ejecutar procedimiento: ObtenerEstadoGeneralCliente
+        [HttpGet("estadocuenta/{codigoCliente}")]
+        public async Task<ActionResult> ObtenerEstadoGeneralCliente(int codigoCliente)
+        {
+            //Verificar si el cliente existe
+            var cliente = await _transaccionService.BuscarClienteAsync(codigoCliente);
+
+            if (cliente == null)
+            {
+                return NotFound(new { Mensaje = "Cliente no encontrado." });
+            }
+
+            var resultado = await _context.Cliente
+                .FromSqlInterpolated($"EXEC ObtenerEstadoGeneralCliente {codigoCliente}")
+                .ToListAsync();
+
+            return Ok(resultado);
+        }
+
+        //GET: api/Transacciones/transacciones-mes-actual/{codigoCliente}
+        //Ejecutar procedimiento: ObtenerTransaccionesMesActual
+        [HttpGet("transacciones-mes-actual/{codigoCliente}")]
+        public async Task<ActionResult> ObtenerTransaccionesMesActual(int codigoCliente)
+        {
+            //Verificar si el cliente existe
+            var cliente = await _transaccionService.BuscarClienteAsync(codigoCliente);
+
+            if (cliente == null)
+            {
+                return NotFound(new { Mensaje = "Cliente no encontrado." });
+            }
+
+            var transacciones = await _context.Transaccion
+                .FromSqlInterpolated($"EXEC ObtenerTransaccionesMesActual {codigoCliente}")
+                .ToListAsync();
+
+            return Ok(transacciones);
+        }
+
+        //GET: api/Transacciones/totales-compras/{codigoCliente}
+        //Ejecutar procedimiento: ObtenerTotalesCompras
+        [HttpGet("totales-compras/{codigoCliente}")]
+        public async Task<ActionResult> ObtenerTotalesCompras(int codigoCliente)
+        {
+            //Verificar si el cliente existe
+            var cliente = await _transaccionService.BuscarClienteAsync(codigoCliente);
+
+            if (cliente == null)
+            {
+                return NotFound(new { Mensaje = "Cliente no encontrado." });
+            }
+
+            var totales = await _context.Database
+                .ExecuteSqlInterpolatedAsync($"EXEC ObtenerTotalesCompras {codigoCliente}");
+
+            return Ok(new { Mensaje = "Operación realizada correctamente.", Totales = totales });
+        }
+
 
 
     }

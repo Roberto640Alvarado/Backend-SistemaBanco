@@ -35,7 +35,7 @@ namespace SistemaBancoBack.Controllers
                     Descripcion = tipoTransaccionDto.Descripcion
                 };
 
-                _context.TipoTransacciones.Add(tipoTransaccion);
+                _context.TipoTransaccion.Add(tipoTransaccion);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction(nameof(ObtenerTodosLosTiposTransaccion), new { id = tipoTransaccion.CodigoTipoTransaccion }, new
@@ -57,7 +57,7 @@ namespace SistemaBancoBack.Controllers
         {
             try
             {
-                var tiposTransaccion = await _context.TipoTransacciones.ToListAsync();
+                var tiposTransaccion = await _context.TipoTransaccion.ToListAsync();
 
                 if (!tiposTransaccion.Any())
                     return NotFound("No se encontraron tipos de transacción.");
