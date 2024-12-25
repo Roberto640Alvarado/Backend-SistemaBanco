@@ -39,6 +39,32 @@ namespace SistemaBancoBack.Controllers
             return Ok(clientes);
         }
 
+        //GET: api/Clientes/CodigoCliente
+        //Traer un cliente por su código
+        [HttpGet("{codigoCliente}")]
+        public async Task<ActionResult<object>> GetCliente(int codigoCliente)
+        {
+            var cliente = await _context.Cliente
+                .Where(c => c.CodigoCliente == codigoCliente)
+                .Select(c => new
+                {
+                    c.CodigoCliente,
+                    c.NumeroTarjeta,
+                    c.Nombre,
+                    c.Apellido,
+                    c.LimiteCredito,
+                    c.SaldoDisponible
+                })
+                .FirstOrDefaultAsync();
+
+            if (cliente == null)
+            {
+                return NotFound("Cliente no encontrado.");
+            }
+
+            return Ok(cliente);
+        }
+
         //GET: api/Clientes/buscar
         //Buscar cliente por nombre o número de tarjeta
         [HttpGet("buscar")]
