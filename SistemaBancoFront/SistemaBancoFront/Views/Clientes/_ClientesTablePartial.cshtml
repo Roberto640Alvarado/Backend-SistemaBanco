@@ -1,0 +1,81 @@
+﻿@model List<SistemaBancoFront.Models.Cliente>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Número de Tarjeta</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.NumeroTarjeta</td>
+                <td>@cliente.Nombre</td>
+                <td>@cliente.Apellido</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        
+                        <button class="btn btn-primary btn-sm btn-accion" data-accion="EstadoDeCuenta">Estado de Cuenta</button>
+                        <button class="btn btn-success btn-sm btn-accion"
+                                onclick="window.location.href='@Url.Action("CrearCompra", "Transacciones", new { codigoCliente = cliente.CodigoCliente, nombre = cliente.Nombre, apellido = cliente.Apellido, numeroTarjeta = cliente.NumeroTarjeta })'">
+                            Registrar Compra
+                        </button>
+
+                        <button class="btn btn-info btn-sm btn-accion" data-accion="RegistrarPago">Registrar Pago</button>
+                        <button class="btn btn-secondary btn-sm btn-accion" data-accion="Transacciones">Transacciones</button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .btn-accion {
+        border-radius: 15px; 
+        margin-right: 0.5rem;
+        white-space: nowrap; 
+        padding: 0.3rem 1rem;
+        font-weight: bold; 
+        color: white;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 1rem; 
+    }
+
+    /* Asegura que los botones no se estiren demasiado */
+    .btn-sm {
+        font-size: 0.9rem; 
+        max-width: 150px; 
+        white-space: normal; 
+    }
+
+    /* Colores personalizados */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+
+</style>
