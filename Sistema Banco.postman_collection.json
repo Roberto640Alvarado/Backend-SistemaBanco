@@ -1,0 +1,814 @@
+{
+	"info": {
+		"_postman_id": "27e6fe72-1663-46c9-b2fe-786480bf74b0",
+		"name": "Sistema Banco",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26132804",
+		"_collection_link": "https://red-meteor-672247.postman.co/workspace/Team-Workspace~8965810c-a7f7-4aff-8aca-5c50acb34e95/collection/26132804-27e6fe72-1663-46c9-b2fe-786480bf74b0?action=share&source=collection_link&creator=26132804"
+	},
+	"item": [
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Traer todos Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5137/api/Clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Clientes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5137/api/Clientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Clientes"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 02:58:28 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"codigoCliente\": 1,\n        \"numeroTarjeta\": \"5512941564282157\",\n        \"nombre\": \"Roberto\",\n        \"apellido\": \"Alvarado\"\n    },\n    {\n        \"codigoCliente\": 2,\n        \"numeroTarjeta\": \"5454123456781234\",\n        \"nombre\": \"Carlos\",\n        \"apellido\": \"Alvarado\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Crear cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Usuario\",\r\n  \"apellido\": \"Prueba\",\r\n  \"numeroTarjeta\": \"5642564721496128\",\r\n  \"limiteCredito\": 5000,\r\n  \"saldoDisponible\": 3000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/Clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Clientes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Usuario\",\r\n  \"apellido\": \"Prueba\",\r\n  \"numeroTarjeta\": \"5642564721496128\",\r\n  \"limiteCredito\": 5000,\r\n  \"saldoDisponible\": 3000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5137/api/Clientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Clientes"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:01:06 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:5137/api/Clientes/buscar?id=3"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"Cliente creado exitosamente.\",\n    \"cliente\": {\n        \"codigoCliente\": 3,\n        \"nombre\": \"Usuario\",\n        \"apellido\": \"Prueba\",\n        \"numeroTarjeta\": \"5642564721496128\",\n        \"limiteCredito\": 5000,\n        \"saldoDisponible\": 3000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Buscar Cliente",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5137/api/Clientes/buscar?nombre=rob",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Clientes",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "rob"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5137/api/Clientes/buscar?nombre=rob",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Clientes",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "nombre",
+											"value": "rob"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:03:47 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"codigoCliente\": 1,\n        \"numeroTarjeta\": \"5512941564282157\",\n        \"nombre\": \"Roberto\",\n        \"apellido\": \"Alvarado\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Buscar cliente por Codigo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5137/api/Clientes/?CodigoCliente=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Clientes",
+								""
+							],
+							"query": [
+								{
+									"key": "CodigoCliente",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5137/api/Clientes/?CodigoCliente=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Clientes",
+										""
+									],
+									"query": [
+										{
+											"key": "CodigoCliente",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:05:51 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"codigoCliente\": 1,\n        \"numeroTarjeta\": \"5512941564282157\",\n        \"nombre\": \"Roberto\",\n        \"apellido\": \"Alvarado\"\n    },\n    {\n        \"codigoCliente\": 2,\n        \"numeroTarjeta\": \"5454123456781234\",\n        \"nombre\": \"Carlos\",\n        \"apellido\": \"Alvarado\"\n    },\n    {\n        \"codigoCliente\": 3,\n        \"numeroTarjeta\": \"5642564721496128\",\n        \"nombre\": \"Usuario\",\n        \"apellido\": \"Prueba\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "Este bloque de la API se encarga de la gestión de la información relacionada con los clientes. Permite realizar las operaciones CRUD (Crear, Leer, Buscar)"
+		},
+		{
+			"name": "Configuracion",
+			"item": [
+				{
+					"name": "Crear configuracion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"codigoConfiguracion\": 0,\r\n  \"porcentajeInteres\": 25,\r\n  \"porcentajeSaldoMinimo\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/Configuracions/configuracion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Configuracions",
+								"configuracion"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"codigoConfiguracion\": 0,\r\n  \"porcentajeInteres\": 25,\r\n  \"porcentajeSaldoMinimo\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5137/api/Configuracions/configuracion",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Configuracions",
+										"configuracion"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:13:53 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:5137/api/Configuracions/configuracion?id=3"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"codigoConfiguracion\": 3,\n    \"porcentajeInteres\": 25,\n    \"porcentajeSaldoMinimo\": 5\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Configuracion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "id",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"codigoConfiguracion\": 1,\r\n  \"porcentajeInteres\": 16,\r\n  \"porcentajeSaldoMinimo\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/Configuracion/configuracion/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Configuracion",
+								"configuracion",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaccion",
+			"item": [
+				{
+					"name": "Crear Compra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"codigoCliente\": 2,\r\n  \"codigoTipoTransaccion\": 1,\r\n  \"fecha\": \"2024-12-26T03:26:20.519Z\",\r\n  \"descripcion\": \"Compra de Celular\",\r\n  \"monto\": 350\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/Transaccions/compra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Transaccions",
+								"compra"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"codigoCliente\": 2,\r\n  \"codigoTipoTransaccion\": 1,\r\n  \"fecha\": \"2024-12-26T03:26:20.519Z\",\r\n  \"descripcion\": \"Compra de Celular\",\r\n  \"monto\": 350\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5137/api/Transaccions/compra",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Transaccions",
+										"compra"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:27:30 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"La compra se registró correctamente.\",\n    \"saldoDisponible\": 8650,\n    \"transaccion\": {\n        \"codigoTransaccion\": 11,\n        \"fecha\": \"2024-12-26T03:26:20.519Z\",\n        \"descripcion\": \"Compra de Celular\",\n        \"monto\": 350\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear pago",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"codigoCliente\": 2,\r\n  \"codigoTipoTransaccion\": 2,\r\n  \"fecha\": \"2024-12-26T03:28:39.123Z\",\r\n  \"descripcion\": \"Pago de tarjeta\",\r\n  \"monto\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/Transaccions/pago",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Transaccions",
+								"pago"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"codigoCliente\": 2,\r\n  \"codigoTipoTransaccion\": 2,\r\n  \"fecha\": \"2024-12-26T03:28:39.123Z\",\r\n  \"descripcion\": \"Pago de tarjeta\",\r\n  \"monto\": 150\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5137/api/Transaccions/pago",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"Transaccions",
+										"pago"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:29:26 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"El pago se registró correctamente.\",\n    \"saldoDisponible\": 8800,\n    \"transaccion\": {\n        \"codigoTransaccion\": 12,\n        \"fecha\": \"2024-12-26T03:28:39.123Z\",\n        \"descripcion\": \"Pago de tarjeta\",\n        \"monto\": 150\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Todas transacciones de un cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5137/api/Transaccions/?CodigoCliente=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"Transaccions",
+								""
+							],
+							"query": [
+								{
+									"key": "CodigoCliente",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TipoTransaccion",
+			"item": [
+				{
+					"name": "Mostrar todos los tipos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5137/api/TipoTransaccions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"TipoTransaccions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5137/api/TipoTransaccions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"TipoTransaccions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:23:50 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"codigoTipoTransaccion\": 1,\n        \"descripcion\": \"Compra\"\n    },\n    {\n        \"codigoTipoTransaccion\": 2,\n        \"descripcion\": \"Pago\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Crear un tipo de Transaccion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"descripcion\": \"Otros 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5137/api/TipoTransaccions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5137",
+							"path": [
+								"api",
+								"TipoTransaccions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ejemplo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"descripcion\": \"Otros 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5137/api/TipoTransaccions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5137",
+									"path": [
+										"api",
+										"TipoTransaccions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 26 Dec 2024 03:25:14 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:5137/api/TipoTransaccions?id=3"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"El tipo de transacción se creó correctamente.\",\n    \"tipoTransaccion\": {\n        \"codigoTipoTransaccion\": 3,\n        \"descripcion\": \"Otros 2\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
