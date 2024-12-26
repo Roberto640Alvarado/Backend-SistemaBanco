@@ -1,0 +1,45 @@
+﻿@model SistemaBancoFront.Models.ViewModels.CompraViewModel
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h4>Registro de Compra</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateCompra" method="post">
+                <input type="hidden" asp-for="Compra.CodigoCliente" />
+
+                <div class="mb-3">
+                    <label>Nombre del Cliente:</label>
+                    <p>@Model.Cliente.Nombre @Model.Cliente.Apellido </p>
+                </div>
+
+                <div class="mb-3">
+                    <label>Número de Tarjeta de Crédito:</label>
+                    <p>@Model.Cliente.NumeroTarjeta</p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fechaCompra">Fecha de Compra:</label>
+                    <input type="date" asp-for="Compra.Fecha" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" asp-for="Compra.Descripcion" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="monto">Monto:</label>
+                    <input type="number" asp-for="Compra.Monto" class="form-control" step="0.01" />
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/" class="btn btn-warning text-dark">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

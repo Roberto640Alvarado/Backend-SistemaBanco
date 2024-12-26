@@ -1,0 +1,54 @@
+﻿@model ClienteTransaccionesViewModel
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h4>Transacciones</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label>Nombre del Cliente:</label>
+                <p>@Model.Nombre @Model.Apellido</p>
+            </div>
+            <div class="mb-3">
+                <label>Número de Tarjeta de Crédito:</label>
+                <p>@Model.NumeroTarjeta</p>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Número de Autorización</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Cargo</th>
+                        <th>Abono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaccion in Model.Transacciones)
+                    {
+                        <tr>
+                            <td>@transaccion.CodigoTransaccion</td>
+                            <td>@transaccion.Fecha.ToString("dd-MM-yyyy")</td>
+                            <td>@transaccion.Descripcion</td>
+                            <td>
+                                @if (transaccion.CodigoTipoTransaccion == 1)
+                                {
+                                    @transaccion.Monto.ToString("C")
+                                }
+                            </td>
+                            <td>
+                                @if (transaccion.CodigoTipoTransaccion == 2)
+                                {
+                                    @transaccion.Monto.ToString("C")
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

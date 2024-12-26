@@ -21,12 +21,18 @@
                         
                         <button class="btn btn-primary btn-sm btn-accion" data-accion="EstadoDeCuenta">Estado de Cuenta</button>
                         <button class="btn btn-success btn-sm btn-accion"
-                                onclick="window.location.href='@Url.Action("CrearCompra", "Transacciones", new { codigoCliente = cliente.CodigoCliente, nombre = cliente.Nombre, apellido = cliente.Apellido, numeroTarjeta = cliente.NumeroTarjeta })'">
+                                onclick="window.location.href='@Url.Action("CreateCompra", "Transacciones", new { codigoCliente = cliente.CodigoCliente })'">
                             Registrar Compra
                         </button>
+                        <button class="btn btn-info btn-sm btn-accion"
+                                onclick="window.location.href='@Url.Action("CreatePago", "Transacciones", new { codigoCliente = cliente.CodigoCliente })'">
+                            Registrar Pago
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-accion"
+                                onclick="window.location.href='@Url.Action("DetailsTransaccion", "Transacciones", new { codigoCliente = cliente.CodigoCliente })'">
+                            Transacciones
+                        </button>
 
-                        <button class="btn btn-info btn-sm btn-accion" data-accion="RegistrarPago">Registrar Pago</button>
-                        <button class="btn btn-secondary btn-sm btn-accion" data-accion="Transacciones">Transacciones</button>
                     </div>
                 </td>
             </tr>

@@ -1,62 +1,136 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SistemaBancoFront.Models;
 using SistemaBancoFront.Models.DTO;
-using SistemaBancoFront.Services;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Transactions;
+using SistemaBancoFront.Models.ViewModels;
 
 namespace SistemaBancoFront.Controllers
 {
     public class TransaccionesController : Controller
     {
-        private readonly TransaccionService _transaccionService;
+        private readonly HttpClient httpClient;
 
-        public TransaccionesController()
+        public TransaccionesController(IHttpClientFactory httpClientFactory)
         {
-            _transaccionService = new TransaccionService();
+            httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5137/");
+
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        //Acción para mostrar el formulario y manejar la compra
-        [HttpGet]
-        public IActionResult CrearCompra(int codigoCliente, string nombre, string apellido, string numeroTarjeta)
+
+        public async Task<IActionResult> DetailsTransaccion(int codigoCliente)
         {
-            //Crear un objeto CompraDTO con los datos del cliente
-            var compraDto = new CompraDTO
+            //Consultar los datos del cliente
+            var respuestaCliente = await httpClient.GetAsync($"api/Clientes/{codigoCliente}");
+            if (!respuestaCliente.IsSuccessStatusCode)
             {
-                CodigoCliente = codigoCliente,
-                Descripcion = "",  
-                Monto = 0,        
-                Fecha = DateTime.Now
+                return View("Error");
+            }
+            var cliente = await respuestaCliente.Content.ReadAsAsync<Cliente>();
+
+            //Consultar las transacciones del cliente
+            var respuestaTransacciones = await httpClient.GetAsync($"api/Transaccions/{codigoCliente}");
+            if (!respuestaTransacciones.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var transacciones = await respuestaTransacciones.Content.ReadAsAsync<List<Transaccion>>();
+
+            //Construir el modelo de vista
+            var clienteViewModel = new ClienteTransaccionesViewModel
+            {
+                CodigoCliente = cliente.CodigoCliente,
+                Nombre = cliente.Nombre,
+                Apellido = cliente.Apellido,
+                NumeroTarjeta = cliente.NumeroTarjeta,
+                Transacciones = transacciones
             };
 
-            //Pasar los datos del cliente a la vista
-            ViewBag.NombreCliente = nombre;
-            ViewBag.ApellidoCliente = apellido;
-            ViewBag.NumeroTarjeta = numeroTarjeta;
-
-            return View(compraDto);  
+            return View(clienteViewModel);
         }
 
-        //Acción para manejar la creación de la compra desde el formulario
-        [HttpPost]
-        public async Task<IActionResult> CrearCompra(CompraDTO compraDto)
-        {
-            //Llamar al servicio para hacer la compra
-            var resultado = await _transaccionService.CrearCompraAsync(compraDto);
 
-            if (resultado)
+        public async Task<IActionResult> CreateCompra(int codigoCliente)
+        {
+            var respuesta = await httpClient.GetAsync($"api/Clientes/{codigoCliente}");
+            if (respuesta.IsSuccessStatusCode)
             {
-                TempData["Mensaje"] = "Compra registrada correctamente.";  //Mensaje de éxito
-                return RedirectToAction("CrearCompra", new { codigoCliente = compraDto.CodigoCliente, nombre = "", apellido = "", numeroTarjeta = "" });
+                var cliente = await respuesta.Content.ReadAsAsync<Cliente>();
+
+                var viewModel = new CompraViewModel
+                {
+                    Cliente = cliente,
+                    Compra = new CompraDTO
+                    {
+                        CodigoCliente = cliente.CodigoCliente
+                    }
+                };
+
+                return View(viewModel);
             }
             else
             {
-                TempData["Mensaje"] = "Error al registrar la compra.";  //Mensaje de error
-                return RedirectToAction("CrearCompra", new { codigoCliente = compraDto.CodigoCliente, nombre = "", apellido = "", numeroTarjeta = "" });
+                return View("Error");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCompra(CompraViewModel viewModel)
+        {
+            var respuesta = await httpClient.PostAsJsonAsync("api/Transaccions/compra", viewModel.Compra);
+            if (respuesta.IsSuccessStatusCode)
+            {
+                return Redirect("/");
+            }
+            else
+            {
+                return View("Error");
+            }
+        }
+
+        public async Task<IActionResult> CreatePago(int codigoCliente)
+        {
+            var respuesta = await httpClient.GetAsync($"api/Clientes/{codigoCliente}");
+            if (respuesta.IsSuccessStatusCode)
+            {
+                var cliente = await respuesta.Content.ReadAsAsync<Cliente>();
+
+                var viewModel = new PagoViewModel
+                {
+                    Cliente = cliente,
+                    Pago = new PagoDTO
+                    {
+                        CodigoCliente = cliente.CodigoCliente
+                    }
+                };
+
+                return View(viewModel);
+            }
+            else
+            {
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePago(PagoViewModel viewModel)
+        {
+            var respuesta = await httpClient.PostAsJsonAsync("api/Transaccions/pago", viewModel.Pago);
+            if (respuesta.IsSuccessStatusCode)
+            {
+                return Redirect("/");
+            }
+            else
+            {
+                return View("Error");
+            }
+        }
+
+
+
 
 
     }

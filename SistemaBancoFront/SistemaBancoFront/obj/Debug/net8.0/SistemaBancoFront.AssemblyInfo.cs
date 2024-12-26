@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SistemaBancoFront")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a4ac3b9a0c200a67fb7e8da9b1f86413b491d70")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23a3c642e11edbb85fb60b0054608acd181f1bb4")]
 [assembly: System.Reflection.AssemblyProductAttribute("SistemaBancoFront")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SistemaBancoFront")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
