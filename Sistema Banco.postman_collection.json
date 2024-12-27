@@ -2,9 +2,10 @@
 	"info": {
 		"_postman_id": "27e6fe72-1663-46c9-b2fe-786480bf74b0",
 		"name": "Sistema Banco",
+		"description": "La siguiente documentación explica los diferentes endpoints de cada seccion y el uso y ejemplos para poderlos utilizar.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26132804",
-		"_collection_link": "https://red-meteor-672247.postman.co/workspace/Team-Workspace~8965810c-a7f7-4aff-8aca-5c50acb34e95/collection/26132804-27e6fe72-1663-46c9-b2fe-786480bf74b0?action=share&source=collection_link&creator=26132804"
+		"_collection_link": "https://red-meteor-672247.postman.co/workspace/8965810c-a7f7-4aff-8aca-5c50acb34e95/collection/26132804-27e6fe72-1663-46c9-b2fe-786480bf74b0?action=share&source=collection_link&creator=26132804"
 	},
 	"item": [
 		{
@@ -26,7 +27,8 @@
 								"api",
 								"Clientes"
 							]
-						}
+						},
+						"description": "Con este endpoint nos permite traer todos los clientes que poseamos en la base de datos."
 					},
 					"response": [
 						{
@@ -98,7 +100,8 @@
 								"api",
 								"Clientes"
 							]
-						}
+						},
+						"description": "Este endpoint nos permite crear un nuevo cliente y se le asignara un codigo cliente unico."
 					},
 					"response": [
 						{
@@ -188,7 +191,8 @@
 									"value": "rob"
 								}
 							]
-						}
+						},
+						"description": "Con este endpoints podemos buscar a un cliente en especifico y poder extraer su información.  \nSolo debemos de pasar el numero completo de la tarjeta o si deseamos solo escribimos el nombre o una parte del nombre para que devuelva las coincidencias."
 					},
 					"response": [
 						{
@@ -272,7 +276,8 @@
 									"value": "1"
 								}
 							]
-						}
+						},
+						"description": "Este endpoints es para busqueda de un cliente y es mas directo, ya que solo debemos de pasarle el codigo del cliente para poder extraer su información."
 					},
 					"response": [
 						{
@@ -358,7 +363,8 @@
 								"Configuracions",
 								"configuracion"
 							]
-						}
+						},
+						"description": "Para crear una configuracion y detallar el porcentaje de interes y el porcentaje saldo minimo, que seran usados para el estado de cuenta de un cliente."
 					},
 					"response": [
 						{
@@ -453,11 +459,13 @@
 								"configuracion",
 								"1"
 							]
-						}
+						},
+						"description": "Este endpoint nos permite actualizar un campo de una configuracion, solo debemos de pasar el id de la configuración y podremos modificar ya sea el campo de porcentaje de interes o el porcentaje de saldo minimo."
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "Este bloque de la API se encarga de la gestión de la información relacionada con las configuraciones. Permite realizar las operaciones de crear y actualizar."
 		},
 		{
 			"name": "Transaccion",
@@ -488,7 +496,8 @@
 								"Transaccions",
 								"compra"
 							]
-						}
+						},
+						"description": "Con este endpoints podremos crear una compra, y asignar la compra a un cliente. Esto hara que saldo disponible de la tarjeta del cliente disminuya. El código de transacción de una compra sera 1."
 					},
 					"response": [
 						{
@@ -571,7 +580,8 @@
 								"Transaccions",
 								"pago"
 							]
-						}
+						},
+						"description": "Con este endpoints podremos crear un pago, y asignar el pago a un cliente. Esto hara que saldo disponible de la tarjeta del cliente incremente. El código de transacción de un pago será 2."
 					},
 					"response": [
 						{
@@ -651,11 +661,13 @@
 									"value": "2"
 								}
 							]
-						}
+						},
+						"description": "Por medio de este endpoint podremos visualizar todas las transacciones de un cliente, para esto debemos de pasarle el codigo cliente."
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "Este bloque de la API se encarga de la gestión de la información relacionada con las transacciones. Permite realizar las operaciones de crear, leer y buscar."
 		},
 		{
 			"name": "TipoTransaccion",
@@ -676,7 +688,8 @@
 								"api",
 								"TipoTransaccions"
 							]
-						}
+						},
+						"description": "Con este endpoint podremos visualizar todos los tipos de transaccion que existen en la base de datos de Sistema Banco."
 					},
 					"response": [
 						{
@@ -748,7 +761,8 @@
 								"api",
 								"TipoTransaccions"
 							]
-						}
+						},
+						"description": "Con este endpoint podremos crear un tipo de transaccion, se pide que en este endpoint se cree primero \"Compra\" para que se le asigne el codigo 1 y posterior crear \"Pago\" para que asigne el codigo 2."
 					},
 					"response": [
 						{
@@ -808,7 +822,8 @@
 						}
 					]
 				}
-			]
+			],
+			"description": "Este bloque de la API se encarga de la gestión de la información relacionada con los clientes. Permite realizar las operaciones de crear y leer."
 		}
 	]
 }
